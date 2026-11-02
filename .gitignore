@@ -1,0 +1,11 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.vscode/
+.idea/
+*.log
+calibration_points.npz
+camera_calibration.npz
+.DS_Store
