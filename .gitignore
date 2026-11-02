@@ -1,11 +1,30 @@
+
+# Python virtual environments
 .venv/
 venv/
+
+# Python cache
 __pycache__/
 *.py[cod]
+
+# Environment variables
 .env
+
+# IDE settings
 .vscode/
 .idea/
-*.log
+
+# Generated calibration data
+calibration_images/
 calibration_points.npz
 camera_calibration.npz
+
+# Generated outputs
+outputs/
+
+# Logs
+*.log
+
+# OS files
 .DS_Store
+Thumbs.db

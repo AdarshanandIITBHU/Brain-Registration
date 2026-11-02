@@ -1,0 +1,7 @@
+numpy<2
+opencv-contrib-python==4.11.0.86
+pupil-apriltags==1.0.4.post11
+viser==1.1.1
+trimesh==5.2.0
+pyglet<2
+python-dotenv

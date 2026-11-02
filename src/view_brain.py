@@ -4,13 +4,17 @@ import socket
 import threading
 import json
 import time
-import numpy as np
+from pathlib import Path
+
+# Resolve project paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+MODEL_PATH = PROJECT_ROOT / "assets" / "brain_tumor_ar.glb"
 
 # Start the 3D viewer
 server = viser.ViserServer(port=8081)
 
 # Load the brain model
-with open("brain_tumor_ar.glb", "rb") as f:
+with open(MODEL_PATH, "rb") as f:
     glb_data = f.read()
 
 brain = server.scene.add_glb(
@@ -58,7 +62,7 @@ def reset_position(_):
     z_slider.value = 0.0
     brain.position = (0.0, 0.0, 0.0)
 
-# UDP receiver for AprilTag tracking
+# Receive AprilTag pose over UDP
 def receive_pose():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(("0.0.0.0", 5005))
@@ -70,16 +74,12 @@ def receive_pose():
             data, _ = sock.recvfrom(4096)
             pose = json.loads(data.decode("utf-8"))
 
-            position = pose["position"]
-            rotation = pose["rotation"]
-
-            brain.position = tuple(position)
-            brain.wxyz = tuple(rotation)
+            brain.position = tuple(pose["position"])
+            brain.wxyz = tuple(pose["rotation"])
 
         except Exception as error:
             print("Pose receiver error:", error)
 
-# Start receiver in background
 threading.Thread(
     target=receive_pose,
     daemon=True
@@ -89,6 +89,5 @@ print("Brain viewer running!")
 print("Open http://localhost:8081")
 print("UDP port: 5005")
 
-# Keep server running
 while True:
     time.sleep(1)
